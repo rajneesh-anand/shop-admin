@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import SEO from "components/Seo";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
@@ -58,25 +59,26 @@ export default function Admin({ children, ...rest }) {
     }
   };
   // initialize and destroy the PerfectScrollbar plugin
-  React.useEffect(() => {
-    if (navigator.platform.indexOf("Win") > -1) {
-      ps = new PerfectScrollbar(mainPanel.current, {
-        suppressScrollX: true,
-        suppressScrollY: false,
-      });
-      document.body.style.overflow = "hidden";
-    }
-    window.addEventListener("resize", resizeFunction);
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      if (navigator.platform.indexOf("Win") > -1) {
-        ps.destroy();
-      }
-      window.removeEventListener("resize", resizeFunction);
-    };
-  }, [mainPanel]);
+  // React.useEffect(() => {
+  //   if (navigator.platform.indexOf("Win") > -1) {
+  //     ps = new PerfectScrollbar(mainPanel.current, {
+  //       suppressScrollX: true,
+  //       suppressScrollY: false,
+  //     });
+  //     document.body.style.overflow = "hidden";
+  //   }
+  //   window.addEventListener("resize", resizeFunction);
+  //   // Specify how to clean up after this effect:
+  //   return function cleanup() {
+  //     if (navigator.platform.indexOf("Win") > -1) {
+  //       ps.destroy();
+  //     }
+  //     window.removeEventListener("resize", resizeFunction);
+  //   };
+  // }, [mainPanel]);
   return (
     <div className={classes.wrapper}>
+      <SEO title="Dashboard" />
       <Sidebar
         routes={routes}
         logoText={"Gulshan Shop"}

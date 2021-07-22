@@ -147,7 +147,7 @@ function ProductEditPage({ post }) {
 
     try {
       const result = await fetch(
-        `http://localhost:8080/api/product/${productData.id}`,
+        `https://gulshan-api.herokuapp.com/api/product/${productData.id}`,
         {
           method: "POST",
           body: formData,

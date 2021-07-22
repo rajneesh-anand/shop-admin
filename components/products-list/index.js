@@ -44,7 +44,7 @@ export default function ProductList({ data }) {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Link href={`/admin/product/${product.id}`}>
+              <Link href={`/product/edit/${product.id}`}>
                 <a>Edit</a>
               </Link>
             </CardActions>

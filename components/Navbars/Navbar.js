@@ -14,7 +14,6 @@ import Menu from "@material-ui/icons/Menu";
 import AdminNavbarLinks from "./AdminNavbarLinks.js";
 import RTLNavbarLinks from "./RTLNavbarLinks.js";
 import Button from "components/CustomButtons/Button.js";
-
 import styles from "assets/jss/nextjs-material-dashboard/components/headerStyle.js";
 
 export default function Header(props) {
@@ -24,7 +23,7 @@ export default function Header(props) {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   function makeBrand() {
-    var name = "NextJS Material Dashboard";
+    var name = "Dashboard";
     props.routes.map((prop) => {
       if (router.route.indexOf(prop.layout + prop.path) !== -1) {
         name = props.rtlActive ? prop.rtlName : prop.name;
@@ -34,11 +33,11 @@ export default function Header(props) {
     return name;
   }
   const { color } = props;
-  const appBarClasses = classNames({
-    [" " + classes[color]]: color,
-  });
+  // const appBarClasses = classNames({
+  //   [" " + classes[color]]: color,
+  // });
   return (
-    <AppBar className={classes.appBar + appBarClasses}>
+    <AppBar className={classes.appBar}>
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}

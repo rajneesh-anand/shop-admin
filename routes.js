@@ -42,23 +42,17 @@ const dashboardRoutes = [
     icon: "content_paste",
     layout: "/admin",
   },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: LocationOn,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/maps",
+  //   name: "Maps",
+  //   icon: LocationOn,
+  //   layout: "/admin",
+  // },
   {
     path: "/notifications",
     name: "Notifications",
     icon: Notifications,
     layout: "/admin",
-  },
-  {
-    path: "/rtl-page",
-    name: "RTL Support",
-    icon: Language,
-    layout: "/rtl",
   },
 ];
 

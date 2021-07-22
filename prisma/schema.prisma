@@ -60,6 +60,7 @@ model Product {
   minimumQuantity Int?
   usage String?
   inStock Boolean @default(true) 
+  createdAt     DateTime  @default(now()) 
 }
 
 
@@ -70,15 +71,16 @@ model Orders {
   Name        String
   Email       String
   Contact String?
-  Address   String[]
+  Address   Json?
   TotalProducts Int
   Amount Decimal
   Tax Decimal?
   ShippingCharge  Decimal ?
   TotalAmount Decimal
-  ProductDetails String[]
+  ProductDetails Json?
   PaymentID String?
   PaymentStatus String ?
+  OrderStatus String ?
   createdAt     DateTime  @default(now()) 
   customer    User?   @relation(fields: [cusId], references: [id])
   cusId  Int?

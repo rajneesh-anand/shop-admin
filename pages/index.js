@@ -1,19 +1,28 @@
 import React from "react";
 import Router from "next/router";
-import { useSession } from "next-auth/client";
+import { useSession, getSession } from "next-auth/client";
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function Index() {
-  const [session, loading] = useSession();
-  React.useEffect(() => {
-    if (!loading) {
-      if (!session) {
-        Router.push("/auth/signin");
-      } else {
-        Router.push("/admin/dashboard");
-      }
-    }
-  }, [session, loading]);
+  return <CircularProgress />;
+}
 
-  return loading && <CircularProgress />;
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: "/admin/dashboard",
+        permanent: false,
+      },
+    };
+  }
 }

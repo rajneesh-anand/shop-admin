@@ -14,7 +14,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 // core components
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
-import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/components/sidebarStyle.js";
 
@@ -26,14 +25,12 @@ export default function Sidebar(props) {
   const classes = useStyles();
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
-    console.log(`${routeName}- ${router.route.indexOf(routeName)}`);
     return router.pathname === routeName ? true : false;
   }
   const { color, logo, image, logoText, routes } = props;
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
-        var activePro = " ";
         var listItemClasses;
 
         listItemClasses = classNames({
@@ -103,7 +100,7 @@ export default function Sidebar(props) {
         >
           {brand}
           <div className={classes.sidebarWrapper}>
-            <AdminNavbarLinks />
+            {/* <AdminNavbarLinks /> */}
             {links}
           </div>
           {image !== undefined ? (

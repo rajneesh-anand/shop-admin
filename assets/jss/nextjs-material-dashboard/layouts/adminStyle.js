@@ -23,9 +23,10 @@ const appStyle = (theme) => ({
     overflowScrolling: "touch",
   },
   content: {
-    marginTop: "70px",
+    marginTop: "48px",
     padding: "8px",
     minHeight: "calc(100vh - 123px)",
+    backgroundColor: "#ffffff",
   },
   container,
   map: {

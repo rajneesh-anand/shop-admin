@@ -44,14 +44,6 @@ export default class MyApp extends App {
 
     return (
       <React.Fragment>
-        <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
-          <title>NextJS Material Dashboard by Creative Tim</title>
-          <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-        </Head>
         <Layout>
           <Provider session={pageProps.session}>
             <Component {...pageProps} />

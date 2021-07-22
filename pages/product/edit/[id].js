@@ -3,7 +3,6 @@ import Dropzone from "react-dropzone";
 import slugify from "slugify";
 import { useForm, Controller } from "react-hook-form";
 import dynamic from "next/dynamic";
-
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -13,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Admin from "layouts/Admin.js";
+import { getSession } from "next-auth/client";
 
 import {
   productSubCategoryOptions,
@@ -54,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProductPage() {
+function ProductEditPage({ post }) {
+  const productData = JSON.parse(post);
   const editorRef = useRef();
   const [editorLoaded, setEditorLoaded] = useState(false);
   const { CKEditor, ClassicEditor } = editorRef.current || {};
@@ -62,14 +63,23 @@ function ProductPage() {
   const [selectedImage, setSelectedImage] = useState([]);
   const [usage, setUsage] = useState("");
   const [message, setMessage] = useState();
-  const [subCat, setSubCat] = useState([]);
+  const [subCat, setSubCat] = useState(productData.subCategories);
   const classes = useStyles();
+  console.log(productData);
+
+  const data = {
+    gst: productData.gst,
+    stock: productData.inStock ? "Yes" : "No",
+    usage: productData.usage,
+    category: productData.category,
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm({
     mode: "onBlur",
   });
@@ -80,6 +90,13 @@ function ProductPage() {
       ClassicEditor: require("@ckeditor/ckeditor5-build-classic"),
     };
     setEditorLoaded(true);
+    setValue("product_name", productData.name);
+    setValue("product_desc", productData.description);
+    setValue("size", productData.size);
+    setValue("weight", productData.weight);
+    setValue("mrp", productData.price);
+    setValue("selling_price", productData.sellingPrice);
+    setValue("minimum_qnty", productData.minimumQuantity);
   }, []);
 
   const subCatSelectedValues = ["Yoga"];
@@ -129,15 +146,18 @@ function ProductPage() {
     );
 
     try {
-      const result = await fetch("http://localhost:8080/api/product", {
-        method: "POST",
-        body: formData,
-      });
+      const result = await fetch(
+        `https://gulshan-api.herokuapp.com/api/product/${productData.id}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const resultJson = await result.json();
 
       if (resultJson.msg === "success") {
         setProcessingTo(false);
-        setMessage("Product uploaded successfully");
+        setMessage("Product updated successfully");
       }
     } catch (error) {
       console.log(error);
@@ -265,7 +285,7 @@ function ProductPage() {
                   <InputLabel htmlFor="gst_rate">GST Rate</InputLabel>
                   <Select
                     native
-                    defaultValue="18"
+                    defaultValue={data.gst}
                     onChange={onChange}
                     label="GST Rate"
                     inputProps={{
@@ -366,7 +386,7 @@ function ProductPage() {
                   <InputLabel htmlFor="category">Product Category</InputLabel>
                   <Select
                     native
-                    defaultValue="Mobile"
+                    defaultValue={data.category}
                     onChange={onChange}
                     label="Product Category"
                     inputProps={{
@@ -388,7 +408,7 @@ function ProductPage() {
         <GridItem xs={6} sm={4} md={4}>
           <Multiselect
             options={productSubCategoryOptions}
-            selectedValues={subCatSelectedValues}
+            selectedValues={productData.subCategories}
             onSelect={onCatSelect}
             onRemove={onCatRemove}
             placeholder="+ Add Sub Category"
@@ -411,7 +431,7 @@ function ProductPage() {
                   <InputLabel htmlFor="stock">Stock Available</InputLabel>
                   <Select
                     native
-                    defaultValue="Yes"
+                    defaultValue={data.stock}
                     onChange={onChange}
                     label="Stock Available"
                     inputProps={{
@@ -432,7 +452,7 @@ function ProductPage() {
           {editorLoaded ? (
             <CKEditor
               editor={ClassicEditor}
-              data={usage}
+              data={data.usage}
               onReady={(editor) => {
                 editor.editing.view.change((writer) => {
                   writer.setStyle(
@@ -454,7 +474,7 @@ function ProductPage() {
         <GridItem xs={12} sm={12} md={12} style={{ textAlign: "center" }}>
           <div>
             <Button type="submit" variant="contained" color="primary">
-              {isProcessing ? "Uploading..." : `Upload`}
+              {isProcessing ? "Updating..." : `Update`}
             </Button>
           </div>
         </GridItem>
@@ -463,6 +483,35 @@ function ProductPage() {
   );
 }
 
-ProductPage.layout = Admin;
+ProductEditPage.layout = Admin;
 
-export default ProductPage;
+export default ProductEditPage;
+
+export async function getServerSideProps({ params, req, res }) {
+  const session = await getSession({ req });
+  if (!session) {
+    res.statusCode = 403;
+    return { props: { post: JSON.stringify([]) } };
+  }
+  try {
+    const { id } = params;
+    const post = await prisma.product.findFirst({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    return {
+      props: { post: JSON.stringify(post) },
+    };
+  } catch {
+    res.statusCode = 404;
+    return {
+      props: {},
+    };
+  } finally {
+    async () => {
+      await prisma.$disconnect();
+    };
+  }
+}
