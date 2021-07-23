@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
-    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && rm -rf .next/ && npm install && npm run dev",
-    "pg:run": "npx prisma db push --preview-feature"
+    "start": "next start",    
+    "pg:run": "npx prisma db push --preview-feature",
+    "prisma:generate": "prisma generate",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^29.0.0",

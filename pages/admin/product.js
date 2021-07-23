@@ -161,9 +161,13 @@ function ProductPage() {
               <section className="product-photo">
                 <div {...getRootProps()}>
                   <input {...getInputProps()} multiple />
-                  <p>
-                    Drag 'n' drop Product Photos here, or click to select Photos{" "}
-                  </p>
+                  <i
+                    class="fa fa-cloud-upload fa-4x"
+                    aria-hidden="true"
+                  ></i>{" "}
+                  <span>
+                    Drag 'n' drop Product Photos here, or click to select Photos
+                  </span>
                 </div>
               </section>
             )}

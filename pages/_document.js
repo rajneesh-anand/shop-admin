@@ -21,6 +21,7 @@ class MyDocument extends Document {
             href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"
           />
           <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons"
